@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MK APK STORE</title>
+  <link rel="icon" href="favicon.png" />
+  <style>
+    :root {
+      --bg-dark: #121212;
+      --text-dark: #ffffff;
+      --bg-light: #f0f0f0;
+      --text-light: #121212;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      background-image: url('https://i.imgur.com/chrRge6.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    body.light-mode {
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      background-image: url('https://source.unsplash.com/random/1920x1080?light,abstract');
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: -1;
+    }
+
+    .header-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 30px 20px 10px;
+      text-align: center;
+    }
+
+    header {
+      font-size: 36px;
+      font-weight: 900;
+      color: white;
+      padding: 25px 40px;
+      border-radius: 30px;
+      background: linear-gradient(270deg, #00f260, #0575e6, #ff6ec4, #f9d423);
+      background-size: 1000% 1000%;
+      animation: gradientAnimation 10s ease infinite;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+      position: relative;
+      display: inline-block;
+    }
+
+    @keyframes gradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .mode-switch {
+      margin-top: 15px;
+      padding: 8px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 20px;
+      border: 2px solid white;
+      background: transparent;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode .mode-switch {
+      color: #121212;
+      border-color: #121212;
+    }
+
+    .mode-switch:hover {
+      background-color: white;
+      color: black;
+    }
+
+    body.light-mode .mode-switch:hover {
+      background-color: black;
+      color: white;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 25px;
+      border: none;
+      font-size: 18px;
+      outline: none;
+      box-shadow: 0 0 8px rgba(46, 204, 113, 0.6);
+      background-color: #222;
+      color: #eee;
+    }
+
+    body.light-mode input[type="text"] {
+      background-color: #fff;
+      color: #111;
+      box-shadow: 0 0 8px rgba(39, 174, 96, 0.8);
+    }
+
+    .result {
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+      display: none;
+      box-shadow: 0 0 10px #27ae60;
+    }
+
+    body.light-mode .result {
+      background: #e8f5e9;
+      color: #222;
+    }
+
+    .apk-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .apk-info img {
+      width: 100px;
+      height: 100px;
+      border-radius: 15px;
+      object-fit: cover;
+      display: block;
+      box-shadow: 0 0 10px #2ecc71;
+    }
+
+    .apk-details {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .apk-details h2 {
+      margin: 0 0 12px 0;
+      font-size: 24px;
+    }
+
+    .apk-details p {
+      margin: 0 0 18px 0;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .download-btn {
+      background-color: #27ae60;
+      padding: 12px 25px;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      text-decoration: none;
+      font-size: 18px;
+      display: inline-block;
+      box-shadow: 0 4px 10px rgba(39, 174, 96, 0.7);
+    }
+
+    .offline-notice {
+      display: none;
+      text-align: center;
+      padding: 15px;
+      background-color: #e74c3c;
+      color: white;
+      margin-top: 20px;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .offline-notice button {
+      margin-top: 10px;
+      background-color: white;
+      color: #e74c3c;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    @media (max-width: 640px) {
+      header {
+        font-size: 28px;
+        padding: 20px;
+      }
+      .apk-info {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="header-wrapper">
+    <header>
+      MK MODS APK
+      <div>
+        <button class="mode-switch" id="modeSwitch">Light Mode</button>
+      </div>
+    </header>
+  </div>
+
+  <div class="container">
+    <input type="text" id="apkName" placeholder="Search APK name..." autocomplete="off" />
+
+    <div class="result" id="result">
+      <div class="apk-info">
+        <img id="apkIcon" src="" alt="App Icon" />
+        <div class="apk-details">
+          <h2 id="apkTitle"></h2>
+          <p id="apkDesc"></p>
+          <a id="apkDownload" class="download-btn" href="#" target="_blank">Download APK</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="offline-notice" id="offlineNotice">
+      <p>No Internet Connection</p>
+      <button onclick="retryConnection()">Retry</button>
+    </div>
+  </div>
+
+  <script>
+    const apkInput = document.getElementById("apkName");
+    const result = document.getElementById("result");
+    const title = document.getElementById("apkTitle");
+    const desc = document.getElementById("apkDesc");
+    const icon = document.getElementById("apkIcon");
+    const link = document.getElementById("apkDownload");
+    const modeSwitch = document.getElementById("modeSwitch");
+    const offlineNotice = document.getElementById("offlineNotice");
+
+    const apps = [
+      {
+        name: "moviebox",
+        title: "MovieBox MOD",
+        desc: "Download the latest MovieBox MOD with no ads and region unlock.",
+        icon: "https://i.imgur.com/H62u4Tc.jpeg",
+        url: "https://devuploads.com/fsvwdwlxb18o"
+      },
+      {
+        name: "whatsapp",
+        title: "WhatsApp GB MOD",
+        desc: "Enjoy WhatsApp MOD with extra privacy and customization features.",
+        icon: "https://yourdomain.com/whatsapp-icon.png",
+        url: "https://yourdomain.com/whatsapp-mod.apk"
+      }
+    ];
+
+    function searchAPK() {
+      const input = apkInput.value.toLowerCase().trim();
+      if (!input) {
+        result.style.display = "none";
+        return;
+      }
+      const matchedApp = apps.find(app => app.name.includes(input));
+      if (matchedApp) {
+        title.textContent = matchedApp.title;
+        desc.textContent = matchedApp.desc;
+        icon.src = matchedApp.icon;
+        icon.style.display = "block";
+        link.href = matchedApp.url;
+        link.style.display = "inline-block";
+        result.style.display = "block";
+      } else {
+        title.textContent = "APP NOT FOUND 😫";
+        desc.textContent = "";
+        icon.style.display = "none";
+        link.style.display = "none";
+        result.style.display = "block";
+      }
+    }
+
+    apkInput.addEventListener("input", searchAPK);
+
+    function checkConnection() {
+      offlineNotice.style.display = navigator.onLine ? "none" : "block";
+    }
+
+    function retryConnection() {
+      location.reload();
+    }
+
+    window.addEventListener("load", () => {
+      checkConnection();
+      const mode = localStorage.getItem("mode");
+      if (mode === "light") {
+        document.body.classList.add("light-mode");
+        modeSwitch.textContent = "Dark Mode";
+      }
+    });
+
+    window.addEventListener("online", checkConnection);
+    window.addEventListener("offline", checkConnection);
+
+    modeSwitch.addEventListener("click", () => {
+      document.body.classList.toggle("light-mode");
+      const isLight = document.body.classList.contains("light-mode");
+      modeSwitch.textContent = isLight ? "Dark Mode" : "Light Mode";
+      localStorage.setItem("mode", isLight ? "light" : "dark");
+    });
+  </script>
+</body>
+</html>
